@@ -1,9 +1,3 @@
-import StockSearch from "../components/StockSearch";
-
 export default async function Dashboard() {
-  return (
-    <div>
-      <StockSearch />
-    </div>
-  );
+  return <div className="p-10">Dashboard</div>;
 }

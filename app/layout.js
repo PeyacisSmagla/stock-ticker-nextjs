@@ -1,8 +1,11 @@
 import { Geist, Geist_Mono, Inter } from "next/font/google";
+
+import Navbar from "./components/Navbar";
+import { ThemeProvider } from "./context/themeContext";
+
 import "primereact/resources/themes/lara-light-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
-
 import "./globals.css";
 
 const geistSans = Geist({
@@ -43,11 +46,15 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased bg-white text-black`}
+        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased`}
+        suppressHydrationWarning
       >
-        {children}
+        <ThemeProvider>
+          <Navbar />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
