@@ -5,6 +5,7 @@ import { SEARCH_API } from "../utils/apiEndPoint";
 import { SearchPlaceholder } from "./SearchPlaceholder";
 import { getErrorMessage } from "../utils/helperFn";
 import NoDataFound from "./NoDataFound";
+import { useRouter } from "next/navigation";
 
 const placeholderWords = [
   "Stocks...",
@@ -17,39 +18,33 @@ const categories = ["All Stocks", "Indices", "Superstars", "Buckets"];
 export default function StockSearch() {
   const dropdownRef = useRef(null);
   const inputRef = useRef(null);
+  const router = useRouter();
 
   const [keyword, setKeyword] = useState("");
-  const [results, setResults] = useState(null);
-  const [activeCategory, setActiveCategory] = useState("All Stocks");
+  const [results, setResults] = useState([]);
+  const [activeCategory, setActiveCategory] = useState(categories[0]);
   const [isFocused, setIsFocused] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const placeholder = SearchPlaceholder(placeholderWords);
 
-  const handleNavigate = (symbol) => {
-    window.open(`/stock/${symbol}`, "_blank");
-  };
+  const handleNavigate = (symbol) => router.push(`/stock/${symbol}`);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (e) => {
       if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target) &&
-        inputRef.current &&
-        !inputRef.current.contains(event.target)
+        !dropdownRef.current?.contains(e.target) &&
+        !inputRef.current?.contains(e.target)
       ) {
         setIsFocused(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   useEffect(() => {
-    if (keyword === "") {
+    if (!keyword) {
       setResults([]);
       return;
     }
@@ -58,15 +53,12 @@ export default function StockSearch() {
       setIsLoading(true);
       fetch(SEARCH_API(keyword))
         .then((res) => res.json())
-        .then((data) => {
-          setResults(data);
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          getErrorMessage(error);
+        .then((data) => setResults(data))
+        .catch((err) => {
+          getErrorMessage(err);
           setResults([]);
-          setIsLoading(false);
-        });
+        })
+        .finally(() => setIsLoading(false));
     }, 300);
 
     return () => clearTimeout(delay);
@@ -75,7 +67,7 @@ export default function StockSearch() {
   return (
     <div className="relative max-w-md mx-auto z-[999]">
       <div className="flex items-center bg-[var(--search-bg)] rounded-full px-4 py-2">
-        <i className="pi pi-search text-[var(--primary)] mr-3"></i>
+        <i className="pi pi-search text-[var(--primary)] mr-3" />
         <input
           ref={inputRef}
           type="text"
@@ -90,23 +82,17 @@ export default function StockSearch() {
       {isFocused && (
         <div
           ref={dropdownRef}
-          className="absolute top-full left-0 mt-1 rounded-lg shadow z-[9999] bg-[var(--search-bg)] border-blue overflow-auto"
-          style={{
-            minWidth: "460px",
-            maxWidth: "500px",
-            minHeight: "150px",
-            maxHeight: "400px",
-          }}
+          className="absolute top-full left-0 mt-1 w-full max-w-[500px] min-w-[460px] max-h-[400px] min-h-[150px] overflow-auto bg-[var(--search-bg)] border-blue rounded-lg shadow z-[9999]"
         >
-          <div className="flex bg-[var(--search-bg)]">
+          <div className="flex px-3 pt-3 bg-[var(--search-bg)]">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`flex-1 m-3 px-1 py-1 rounded-lg text-xs text-[var(--primary)] ${
+                className={`flex-1 px-1 py-1 text-xs rounded-lg text-[var(--primary)] ${
                   activeCategory === cat
-                    ? "border-1 border-blue-500 font-semibold"
-                    : "border-blue"
+                    ? "border border-blue-500 font-semibold"
+                    : "border-transparent"
                 }`}
               >
                 {cat}
@@ -116,24 +102,23 @@ export default function StockSearch() {
 
           <ul>
             {isLoading ? (
-              <li className="flex items-center justify-center px-4 py-6">
-                <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-blue-500"></div>
+              <li className="flex justify-center items-center py-6">
+                <div className="animate-spin h-6 w-6 rounded-full border-t-2 border-b-2 border-blue-500" />
               </li>
-            ) : results?.length === 0 ? (
+            ) : results.length === 0 ? (
               <NoDataFound />
             ) : (
-              results?.map((item) => (
+              results.map(({ symbol, company, type }) => (
                 <li
-                  key={item.symbol}
-                  onClick={() => handleNavigate(item.symbol)}
-                  className="px-4 py-3 cursor-pointer text-xs 
-                  text-[var(--primary)] flex items-start justify-between border-b"
+                  key={symbol}
+                  onClick={() => handleNavigate(symbol)}
+                  className="px-4 py-3 cursor-pointer text-xs text-[var(--primary)] flex justify-between items-start border-b"
                 >
                   <div>
-                    <p className="mb-1">{item.company}</p>
-                    <p className="text-blue-500">{item.symbol}</p>
+                    <p className="mb-1">{company}</p>
+                    <p className="text-blue-500">{symbol}</p>
                   </div>
-                  <p className="text-xs">{item.type}</p>
+                  <p className="text-xs">{type}</p>
                 </li>
               ))
             )}

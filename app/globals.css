@@ -8,11 +8,7 @@
   --nav-bg: #ffffff;
   --search-bg: #f2f6f8;
   --menu-bg: #fff;
-
-  --primary-main: #2e8b57;
-  --primary-light: #e5f7ec;
-  --primary-dark: #1e5f3d;
-
+  --border: #b9bdc6;
   --primary: #000;
 }
 
@@ -23,6 +19,7 @@
   --search-bg: #212639;
   --primary: #fff;
   --menu-bg: #212639;
+  --border: #556077;
 }
 
 body {
@@ -65,7 +62,7 @@ input:focus {
 }
 
 .border-blue {
-  border: 1px solid #556077;
+  border: 1px solid var(--border);
 }
 
 .border-b {

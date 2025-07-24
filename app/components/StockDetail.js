@@ -21,7 +21,7 @@ export default function StockDetail({ data, symbol }) {
 
   return (
     <div className="w-full h-64  space-y-4">
-      <div className="bg-search rounded-lg p-4 shadow-lg mb-6 flex justify-between items-center border-gray mt-5">
+      <div className="bg-search rounded-lg p-4 shadow-lg mb-6 flex justify-between items-center border-blue mt-5">
         <div>
           <h3 className=" font-bold text-[var(--primary)]">{symbol}</h3>
           <p className="text-sm text-gray-400">{latest?.date?.split(" ")[0]}</p>
@@ -44,7 +44,7 @@ export default function StockDetail({ data, symbol }) {
           <div
             className="grid grid-cols-2 w-full md:w-[40%] md:grid-cols-3 gap-4 min-h-50 flex items-center bg-[var(--search-bg)] 
              hover:scale-105 transform transition duration-200
-          p-4 rounded-lg shadow-md"
+          p-4 rounded-lg shadow-md border-blue"
           >
             <Stat label="Open" value={latest.open || "--"} />
             <Stat label="High" value={latest.high || "--"} />
