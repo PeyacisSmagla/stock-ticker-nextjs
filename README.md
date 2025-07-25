@@ -23,7 +23,7 @@ Users can search for stock symbols, view detailed stock data, and analyze intrad
 - React
 - Recharts (charting library)
 - Fetch API for data fetching
-- Tailwind CSS (optional, for styling)
+- Tailwind CSS
 
 ---
 
