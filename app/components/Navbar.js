@@ -14,6 +14,7 @@ import {
 
 import { useTheme } from "../context/themeContext";
 import StockSearch from "./StockSearch";
+import { useRouter } from "next/navigation";
 
 const menu = [
   {
@@ -50,6 +51,7 @@ const menu = [
 ];
 
 export default function Navbar() {
+  const router = useRouter();
   const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -60,10 +62,12 @@ export default function Navbar() {
     >
       <div className="flex items-center space-x-4">
         <Image
+          onClick={() => router.push("/")}
           src={theme === "light" ? "/tbLogoLight.png" : "/tbLogo.png"}
           width={100}
           height={50}
           alt="logo"
+          className="cursor-pointer"
         />
         <div className="hidden md:flex flex-grow max-w-xl mx-6">
           <StockSearch />

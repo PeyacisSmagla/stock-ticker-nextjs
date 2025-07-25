@@ -1,6 +1,6 @@
 export const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 
-export const SEARCH_API = (keyword, length = 10) =>
+export const SEARCH_API = (keyword, length = 4) =>
   `${API_BASE}/search?keyword=${keyword}&length=${length}`;
 
 export const STOCK_DETAILS_API = (symbol) => `${API_BASE}/stock/${symbol}`;

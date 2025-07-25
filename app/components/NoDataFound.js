@@ -8,7 +8,7 @@ const NoDataFound = () => {
         width={300}
         src="/no-res-image.png"
         alt="No results found"
-        className="w-20 h-20 opacity-50 mb-2"
+        className="w-25 h-25 opacity-50 mb-2"
       />
       <p className="text-sm text-[var(--primary)] opacity-70">
         No data available

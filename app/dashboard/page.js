@@ -1,4 +1,5 @@
 import Image from "next/image";
+import FavStocks from "./components/FavStocks";
 
 export default async function Dashboard() {
   return (
@@ -10,6 +11,7 @@ export default async function Dashboard() {
         width={500}
         className="w-full"
       />
+      <FavStocks />
     </div>
   );
 }

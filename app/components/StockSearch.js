@@ -28,7 +28,12 @@ export default function StockSearch() {
 
   const placeholder = SearchPlaceholder(placeholderWords);
 
-  const handleNavigate = (symbol) => router.push(`/stock/${symbol}`);
+  const handleNavigate = (symbol) => {
+    router.push(`/stock/${symbol}`);
+    setKeyword("");
+    setResults([]);
+    setIsFocused(false);
+  };
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -82,7 +87,8 @@ export default function StockSearch() {
       {isFocused && (
         <div
           ref={dropdownRef}
-          className="absolute top-full left-0 mt-1 w-full max-w-[500px] min-w-[460px] max-h-[400px] min-h-[150px] overflow-auto bg-[var(--search-bg)] border-blue rounded-lg shadow z-[9999]"
+          className="absolute top-full left-0 mt-1 w-full max-w-[500px] min-w-[460px] 
+          max-h-[400px] min-h-[150px] overflow-auto bg-[var(--search-bg)] border-blue rounded-lg shadow z-[9999]"
         >
           <div className="flex px-3 pt-3 bg-[var(--search-bg)]">
             {categories.map((cat) => (
@@ -112,7 +118,7 @@ export default function StockSearch() {
                 <li
                   key={symbol}
                   onClick={() => handleNavigate(symbol)}
-                  className="px-4 py-3 cursor-pointer text-xs text-[var(--primary)] flex justify-between items-start border-b"
+                  className="px-4 py-3 cursor-pointer text-xs  text-[var(--primary)] flex justify-between items-start border-b"
                 >
                   <div>
                     <p className="mb-1">{company}</p>

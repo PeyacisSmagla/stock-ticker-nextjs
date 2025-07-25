@@ -8,7 +8,7 @@ export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState("dark");
 
   useEffect(() => {
-    const storedTheme = sessionStorage.getItem("theme");
+    const storedTheme = localStorage.getItem("theme");
     if (storedTheme) {
       setTheme(storedTheme);
       document.documentElement.classList.toggle("dark", storedTheme === "dark");
@@ -17,7 +17,7 @@ export function ThemeProvider({ children }) {
 
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
-    sessionStorage.setItem("theme", newTheme);
+    localStorage.setItem("theme", newTheme);
     setTheme(newTheme);
     document.documentElement.classList.toggle("dark", newTheme === "dark");
   };
