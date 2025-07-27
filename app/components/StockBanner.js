@@ -44,7 +44,7 @@ const StockBanner = () => {
       <div className="w-full bg-[var(--search-bg)] flex items-center min-h-8 px-3 justify-between">
         {data?.map((item) => (
           <div key={item.label} className="flex items-center gap-1">
-            <p className="text-sm font-bold">
+            <p className="text-xs xl:text-sm font-bold text-[var(--primary)]">
               {item?.label}
               <span className="text-[#00FF57]">{item?.subLabel}</span>
             </p>

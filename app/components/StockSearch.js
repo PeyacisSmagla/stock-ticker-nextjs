@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { SEARCH_API } from "../utils/apiEndPoint";
-import { SearchPlaceholder } from "./SearchPlaceholder";
-import { getErrorMessage } from "../utils/helperFn";
-import NoDataFound from "./NoDataFound";
 import { useRouter } from "next/navigation";
+import NoDataFound from "./NoDataFound";
+import { SearchPlaceholder } from "./SearchPlaceholder";
+
+import { SEARCH_API } from "../utils/apiEndPoint";
+import { getErrorMessage } from "../utils/helperFn";
 
 const placeholderWords = [
   "Stocks...",
@@ -14,6 +15,34 @@ const placeholderWords = [
   "Buckets...",
 ];
 const categories = ["All Stocks", "Indices", "Superstars", "Buckets"];
+
+const renderResults = (results, isLoading, handleNavigate) => {
+  if (isLoading) {
+    return (
+      <li className="flex justify-center items-center py-6">
+        <div className="animate-spin h-6 w-6 rounded-full border-t-2 border-b-2 border-blue-500" />
+      </li>
+    );
+  }
+
+  if (results.length === 0) {
+    return <NoDataFound />;
+  }
+
+  return results.map(({ symbol, company, type }) => (
+    <li
+      key={symbol}
+      onClick={() => handleNavigate(symbol)}
+      className="px-4 py-3 cursor-pointer text-xs text-[var(--primary)] flex justify-between items-start border-b"
+    >
+      <div>
+        <p className="mb-1">{company}</p>
+        <p className="text-blue-500">{symbol}</p>
+      </div>
+      <p className="text-xs">{type}</p>
+    </li>
+  ));
+};
 
 export default function StockSearch() {
   const dropdownRef = useRef(null);
@@ -106,29 +135,7 @@ export default function StockSearch() {
             ))}
           </div>
 
-          <ul>
-            {isLoading ? (
-              <li className="flex justify-center items-center py-6">
-                <div className="animate-spin h-6 w-6 rounded-full border-t-2 border-b-2 border-blue-500" />
-              </li>
-            ) : results.length === 0 ? (
-              <NoDataFound />
-            ) : (
-              results.map(({ symbol, company, type }) => (
-                <li
-                  key={symbol}
-                  onClick={() => handleNavigate(symbol)}
-                  className="px-4 py-3 cursor-pointer text-xs  text-[var(--primary)] flex justify-between items-start border-b"
-                >
-                  <div>
-                    <p className="mb-1">{company}</p>
-                    <p className="text-blue-500">{symbol}</p>
-                  </div>
-                  <p className="text-xs">{type}</p>
-                </li>
-              ))
-            )}
-          </ul>
+          <ul>{renderResults(results, isLoading, handleNavigate)}</ul>
         </div>
       )}
     </div>

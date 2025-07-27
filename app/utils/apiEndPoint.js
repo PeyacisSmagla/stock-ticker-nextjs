@@ -12,5 +12,3 @@ export const STOCK_PRICES_API = (
   limit = 20
 ) =>
   `${API_BASE}/stock/${symbol}/prices?days=${days}&type=${type}&limit=${limit}`;
-
-export const NIFTY_MOVERS_API = `${API_BASE}/index/NIFTY/movers/`;
