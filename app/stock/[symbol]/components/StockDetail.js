@@ -6,6 +6,7 @@ import { Bookmark, ChevronRight } from "lucide-react";
 
 import StockGraph from "./StockGraph";
 import NoDataFound from "../../../components/NoDataFound";
+import { useSearchParams } from "next/navigation";
 
 function Stat({ label, value }) {
   return (
@@ -17,6 +18,9 @@ function Stat({ label, value }) {
 }
 
 export default function StockDetail({ data, symbol }) {
+  const params = useSearchParams();
+  const name = params.get("company");
+
   const [isFav, setIsFav] = useState(false);
   const latest =
     Array.isArray(data) && data.length > 0 ? data[data.length - 1] : null;
@@ -52,7 +56,7 @@ export default function StockDetail({ data, symbol }) {
       </div>
       <div className="flex items-center text-xs text-gray-400 gap-3">
         <h1 className="text-xl font-bold text-[var(--primary)] lg:my-3">
-          {symbol} Stock Details
+          {name || ""} Stock Details
         </h1>
         <button
           onClick={toggleFavorite}

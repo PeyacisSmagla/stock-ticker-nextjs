@@ -68,3 +68,51 @@ input:focus {
 .border-b {
   border-bottom: 1px solid #575757;
 }
+
+.marquee-container {
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--search-bg);
+  min-height: 2rem;
+  display: flex;
+  align-items: center;
+}
+
+.marquee {
+  display: inline-flex;
+  animation: scroll-left 40s linear infinite;
+  white-space: nowrap;
+  gap: 2rem;
+}
+
+.marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.marquee-item .sub-label {
+  color: #00ff57;
+  margin-left: 2px;
+}
+
+.marquee-container:hover .marquee {
+  animation-play-state: paused;
+}
+
+.triangle {
+  fill: #00ff57;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}

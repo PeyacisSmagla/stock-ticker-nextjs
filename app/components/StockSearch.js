@@ -32,7 +32,7 @@ const renderResults = (results, isLoading, handleNavigate) => {
   return results.map(({ symbol, company, type }) => (
     <li
       key={symbol}
-      onClick={() => handleNavigate(symbol)}
+      onClick={() => handleNavigate(symbol, company)}
       className="px-4 py-3 cursor-pointer text-xs text-[var(--primary)] flex justify-between items-start border-b"
     >
       <div>
@@ -57,8 +57,8 @@ export default function StockSearch() {
 
   const placeholder = SearchPlaceholder(placeholderWords);
 
-  const handleNavigate = (symbol) => {
-    router.push(`/stock/${symbol}`);
+  const handleNavigate = (symbol, company) => {
+    router.push(`/stock/${symbol}?company=${encodeURIComponent(company)}`);
     setKeyword("");
     setResults([]);
     setIsFocused(false);
